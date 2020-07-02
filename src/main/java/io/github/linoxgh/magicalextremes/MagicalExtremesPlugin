@@ -1,0 +1,60 @@
+package io.github.linoxgh.magicalextremes;
+
+import org.bukkit.plugin.java.JavaPlugin;
+
+import io.github.linoxgh.magicalextremes.API.Data.DataStorage;
+import io.github.linoxgh.magicalextremes.Configuration.ConfigType;
+import io.github.linoxgh.magicalextremes.Implementation.Commands.MainCommand;
+import io.github.linoxgh.magicalextremes.Implementation.Listeners.ChunkListener;
+
+public final class MagicalExtremesPlugin extends JavaPlugin {
+
+    private static MagicalExtremesPlugin instance;
+
+    @Override
+    public void onEnable() {
+        instance = this;
+
+        // Loading the default configurations
+        saveDefaultConfig();
+
+        // Loading the data storage
+        new DataStorage();
+
+        // Loading the plugin's listeners
+        loadListeners();
+
+        // Loading the plugin's commands
+        loadCommands();
+    }
+
+    @Override
+    public void onDisable() {
+        instance = null;
+
+        // Saving the plugin data
+        DataStorage.getInstance().saveData();
+    }
+
+    @Override
+    public void reloadConfig() {
+        super.reloadConfig();
+
+        for (ConfigType configType : ConfigType.values()) {
+            configType.loadConfig();
+        }
+    }
+
+    private void loadListeners() {
+        // General Listeners
+        new ChunkListener(this);
+    }
+
+    private void loadCommands() {
+        this.getCommand("magicalextremes").setExecutor(new MainCommand());
+    }
+
+    public static MagicalExtremesPlugin getInstance() {
+        return instance;
+    }
+}

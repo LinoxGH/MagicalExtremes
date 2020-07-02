@@ -1,0 +1,30 @@
+name: MagicalExtremes
+version: ${project.version}
+author: LinoxGH
+
+api-version: 1.16
+main: io.github.linoxgh.magicalextremes.MagicalExtremesPlugin
+
+commands:
+  magicalextremes:
+    description: "The main command of the plugin."
+    aliases: [magicale, mextremes, magicalextreme, me]
+    usage: "/magicalextremes help"
+
+
+permissions:
+  magicalextremes.*:
+    description: "Gives the ultimate permission for every permission-dependent feature."
+    default: false
+    children:
+      magicalextremes.commands.*: false
+
+  magicalextremes.commands.*:
+    description: "Gives the ultimate permission on the plugin''s commands."
+    default: false
+    children:
+      magicalextremes.commands.reload: false
+
+  magicalextremes.commands.reload:
+    description: "Gives the player permission to reload plugin configurations."
+    default: op
