@@ -1,11 +1,22 @@
 package io.github.linoxgh.magicalextremes;
 
+import io.github.linoxgh.magicalextremes.API.Items.ItemList;
+import io.github.linoxgh.magicalextremes.API.Items.MagicItem;
+import io.github.linoxgh.magicalextremes.Utilities.ItemUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
+import org.bukkit.event.Event;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import io.github.linoxgh.magicalextremes.API.Data.DataStorage;
 import io.github.linoxgh.magicalextremes.Configuration.ConfigType;
 import io.github.linoxgh.magicalextremes.Implementation.Commands.MainCommand;
 import io.github.linoxgh.magicalextremes.Implementation.Listeners.ChunkListener;
+
+import java.util.Iterator;
 
 public final class MagicalExtremesPlugin extends JavaPlugin {
 
@@ -52,6 +63,12 @@ public final class MagicalExtremesPlugin extends JavaPlugin {
 
     private void loadCommands() {
         this.getCommand("magicalextremes").setExecutor(new MainCommand());
+    }
+
+    private void registerRecipes() {
+        for (MagicItem<? extends Event> item : ItemList.getItems()) {
+            Bukkit.addRecipe(ItemUtils.createRecipe(item.getRecipeType(), new NamespacedKey(this, item.getId()), item.getRecipeOutput(), item.getRecipe()));
+        }
     }
 
     public static MagicalExtremesPlugin getInstance() {
